@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleAI – AI Powered Fashion Styling Advisor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar auto-glass">
+        <div class="logo">
+            <span class="gradient-text">StyleAI</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#try-it">Try It</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+        <a href="#try-it" class="btn btn-primary">Get Started</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Your Personal <br><span class="gradient-text">AI Fashion Stylist</span></h1>
+            <p class="hero-subtitle">Upload your photo and get personalized styling recommendations based on your unique
+                skin tone.</p>
+            <a href="#try-it" class="btn btn-yellow btn-large">
+                Get Started <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        <!-- Decorative elements -->
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features" class="features section">
+        <h2 class="section-title">Why Choose <span class="gradient-text">StyleAI</span></h2>
+        <div class="feature-grid">
+            <div class="feature-card glass-card">
+                <div class="icon-wrapper"><i class="fas fa-camera"></i></div>
+                <h3>Instant Skin Tone Detection</h3>
+                <p>Advanced OpenCV technology perfectly analyzes your complexion.</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon-wrapper"><i class="fas fa-magic"></i></div>
+                <h3>AI Fashion Recommendations</h3>
+                <p>Powered by LLaMA 3.3 to curate styles uniquely for you.</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon-wrapper"><i class="fas fa-palette"></i></div>
+                <h3>Personalized Color Palette</h3>
+                <p>Discover the colors that flatter you the most.</p>
+            </div>
+            <div class="feature-card glass-card">
+                <div class="icon-wrapper"><i class="fas fa-shopping-bag"></i></div>
+                <h3>Direct Shopping Links</h3>
+                <p>Shop your curated look instantly with our partner links.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works section bg-darker">
+        <h2 class="section-title">How It <span class="gradient-text">Works</span></h2>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-icon"><i class="fas fa-upload"></i></div>
+                <h4>1. Upload Photo</h4>
+            </div>
+            <div class="step-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="step">
+                <div class="step-icon"><i class="fas fa-brain"></i></div>
+                <h4>2. AI Analysis</h4>
+            </div>
+            <div class="step-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="step">
+                <div class="step-icon"><i class="fas fa-tshirt"></i></div>
+                <h4>3. Recommendations</h4>
+            </div>
+            <div class="step-arrow"><i class="fas fa-chevron-right"></i></div>
+            <div class="step">
+                <div class="step-icon"><i class="fas fa-shopping-cart"></i></div>
+                <h4>4. Shop Look</h4>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Styling Section (Upload) -->
+    <section id="try-it" class="try-it section">
+        <h2 class="section-title">Discover Your <span class="gradient-text">Perfect Style</span></h2>
+
+        <div class="upload-container glass-card">
+            <div class="upload-left">
+                <div class="gender-selector">
+                    <label>Select Gender:</label>
+                    <div class="radio-group">
+                        <label class="radio-btn">
+                            <input type="radio" name="gender" value="Female" checked>
+                            <span>Female</span>
+                        </label>
+                        <label class="radio-btn">
+                            <input type="radio" name="gender" value="Male">
+                            <span>Male</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="drag-drop-area" id="drop-area">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <p>Drag & Drop your image here or</p>
+                    <input type="file" id="file-input" accept="image/*" hidden>
+                    <button class="btn btn-secondary" onclick="document.getElementById('file-input').click()">Browse
+                        Files</button>
+                </div>
+            </div>
+
+            <div class="upload-right">
+                <div class="preview-area" id="preview-area">
+                    <p class="placeholder-text">Image Preview</p>
+                    <img id="image-preview" src="" alt="Preview" style="display: none;">
+                    <div class="preview-actions" id="preview-actions" style="display: none;">
+                        <button class="btn btn-danger btn-small" id="remove-btn"><i class="fas fa-times"></i>
+                            Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-container">
+            <button class="btn btn-yellow btn-large shadow-glow" id="analyze-btn" disabled>
+                <i class="fas fa-magic"></i> Analyze Style
+            </button>
+        </div>
+
+        <!-- Loader -->
+        <div class="loader-container" id="loader">
+            <div class="spinner"></div>
+            <p>Our AI is analyzing your style...</p>
+        </div>
+
+        <!-- Results Area -->
+        <div class="results-container" id="results" style="display: none;">
+
+            <!-- Skin Tone Detect -->
+            <div class="result-card skin-card glass-card">
+                <h3><i class="fas fa-user-circle"></i> Your Skin Tone Profile</h3>
+                <div class="skin-info">
+                    <div class="color-circle" id="skin-color-circle"></div>
+                    <div>
+                        <h4 id="skin-category-name" class="gradient-text">Category</h4>
+                        <p>We've analyzed your complexion to provide the best matching colors.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Style Rating -->
+            <div class="result-card rating-card glass-card">
+                <h3><i class="fas fa-star-half-alt"></i> Style Rating</h3>
+                <div class="rating-info" style="margin-top:1rem;">
+                    <h2 id="style-score" class="gradient-text" style="font-size: 3rem; margin-bottom: 0.5rem;">0/10</h2>
+                    <p id="style-explanation" class="desc-text"></p>
+                </div>
+            </div>
+
+            <!-- AI Magic Recs -->
+            <div class="result-card ai-card glass-card">
+                <h3><i class="fas fa-star"></i> AI Recommendations</h3>
+
+                <div class="rec-grid">
+                    <div class="rec-box">
+                        <h4><i class="fas fa-palette"></i> Color Palette</h4>
+                        <ul class="styled-list" id="palette-list"></ul>
+                    </div>
+                    <div class="rec-box" style="grid-column: span 2;">
+                        <h4><i class="fas fa-comment-dots"></i> Style Feedback</h4>
+                        <p id="style-feedback" class="desc-text"></p>
+                    </div>
+                </div>
+
+                <div class="outfits-box">
+                    <h4><i class="fas fa-tshirt"></i> Outfit Suggestions</h4>
+                    <div class="outfit-tabs">
+                        <div class="outfit-item">
+                            <h5><i class="fas fa-coffee"></i> Casual</h5>
+                            <p id="outfit-casual"></p>
+                        </div>
+                        <div class="outfit-item">
+                            <h5><i class="fas fa-briefcase"></i> Business</h5>
+                            <p id="outfit-business"></p>
+                        </div>
+                        <div class="outfit-item">
+                            <h5><i class="fas fa-glass-cheers"></i> Party</h5>
+                            <p id="outfit-party"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shopping -->
+            <div class="shopping-section">
+                <h3><i class="fas fa-shopping-bag"></i> Shop The Look</h3>
+                <div class="product-grid">
+                    <!-- Shirt -->
+                    <div class="product-card glass-card">
+                        <div class="product-img placeholder-img">
+                            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                                alt="Shirt">
+                        </div>
+                        <div class="product-info">
+                            <h4>Top Wear</h4>
+                            <p id="sug-shirt" class="product-sug-text"
+                                style="font-size: 0.9rem; margin-bottom: 1rem; color: #ccc;"></p>
+                            <div class="shop-buttons">
+                                <a href="https://www.myntra.com" target="_blank" class="btn btn-shop">Myntra</a>
+                                <a href="https://www.zara.com" target="_blank" class="btn btn-shop">Zara</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pants -->
+                    <div class="product-card glass-card">
+                        <div class="product-img placeholder-img">
+                            <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                                alt="Pants">
+                        </div>
+                        <div class="product-info">
+                            <h4>Bottom Wear</h4>
+                            <p id="sug-pants" class="product-sug-text"
+                                style="font-size: 0.9rem; margin-bottom: 1rem; color: #ccc;"></p>
+                            <div class="shop-buttons">
+                                <a href="https://www.amazon.in" target="_blank" class="btn btn-shop">Amazon India</a>
+                                <a href="https://www.myntra.com" target="_blank" class="btn btn-shop">Myntra</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Shoes -->
+                    <div class="product-card glass-card">
+                        <div class="product-img placeholder-img">
+                            <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                                alt="Shoes">
+                        </div>
+                        <div class="product-info">
+                            <h4>Footwear</h4>
+                            <p id="sug-shoes" class="product-sug-text"
+                                style="font-size: 0.9rem; margin-bottom: 1rem; color: #ccc;"></p>
+                            <div class="shop-buttons">
+                                <a href="https://www.amazon.in" target="_blank" class="btn btn-shop">Amazon India</a>
+                                <a href="https://www.zara.com" target="_blank" class="btn btn-shop">Zara</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Accessories -->
+                    <div class="product-card glass-card">
+                        <div class="product-img placeholder-img">
+                            <img src="https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                                alt="Accessories">
+                        </div>
+                        <div class="product-info">
+                            <h4>Accessories</h4>
+                            <p id="sug-accessories" class="product-sug-text"
+                                style="font-size: 0.9rem; margin-bottom: 1rem; color: #ccc;"></p>
+                            <div class="shop-buttons">
+                                <a href="https://www.myntra.com" target="_blank" class="btn btn-shop">Myntra</a>
+                                <a href="https://www.amazon.in" target="_blank" class="btn btn-shop">Amazon India</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Quote Section -->
+    <section class="quote-section">
+        <div class="quote-container glass-card">
+            <i class="fas fa-quote-left quote-icon"></i>
+            <h2 id="random-quote">"Style is a way to say who you are without having to speak."</h2>
+            <p>- Rachel Zoe</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="about">
+        <div class="footer-content">
+            <div class="logo">
+                <span class="gradient-text">StyleAI</span>
+            </div>
+            <p>&copy; 2026 StyleAI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
